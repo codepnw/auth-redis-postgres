@@ -17,6 +17,9 @@ func RegisterRoutes(apiConfig *config.ApiConfig) *gin.Engine {
 
 	r.GET("/health-check", hdl.HealthCheck)
 
+	r.POST("/login", hdl.LoginHandler)
+	r.POST("/logout", hdl.LogoutHandler)
+
 	return r
 }
 
