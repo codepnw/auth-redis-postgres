@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/codepnw/auth-redis-postgres/internal/models"
+	"github.com/codepnw/auth-redis-postgres/internal/utils"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -32,6 +33,12 @@ func (l *LocalApiConfig) LoginHandler(c *gin.Context) {
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	validationErrors := utils.ValidateUserLogin(req)
+	if len(validationErrors) > 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": validationErrors})
 		return
 	}
 
